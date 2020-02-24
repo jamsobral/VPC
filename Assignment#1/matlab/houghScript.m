@@ -18,15 +18,20 @@ for i = 1:numel(imglist)
     %read in images%
     [path, imgname, dummy] = fileparts(imglist(i).name);
     img = imread(sprintf('%s/%s', datadir, imglist(i).name));
-    
+    imshow(img);
     if (ndims(img) == 3)
         img = rgb2gray(img);
     end
-    
+    %imshow(img);
     img = double(img) / 255;
-    h = ones(3,3);%matrix de filtro
+    h = [1 0 0; 
+         0 1 0; 
+         0 0 1];%matrix de filtro
     %actual Hough line code function calls%
+    
     img = ImageFilter(img,h);
+    imshow(img);
+    
     [Im] = EdgeFilter(img, sigma);   
     [H,rhoScale,thetaScale] = HoughTransform(Im, threshold, rhoRes, thetaRes);
     [rhos, thetas] = HoughLines(H, nLines);
